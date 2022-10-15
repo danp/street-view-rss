@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Street View RSS</title>
+  <style type="text/css">
+    body { font-family: sans-serif }
+    #addresses { width: 100%; height: 10em; }
+    #existing-link { width: 100%; margin-bottom: 10px }
+  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Generate RSS feeds for Street View updates" />
+</head>
+<body>
+  <h1>Street View RSS</h1>
+
+  <div>
+    <p>Enter addresses one per line to generate an RSS feed link:</p>
+    <script>
+      "use strict";
+
+      function makeLink() {
+          let area = document.getElementById("addresses");
+          let lines = area.value.split("\n").map(l => l.trim()).filter(l => l.length > 0).sort();
+          let query = lines.map(l => "l=" + encodeURIComponent(l))
+          let link = document.getElementById("link");
+          let a = document.createElement("a");
+          a.href = "/atom.xml?" + query.join("&");
+          a.innerHTML = "The RSS link"
+          link.innerHTML = "";
+          link.appendChild(a);
+      }
+
+      function extractAddresses() {
+          let existing = document.getElementById("existing-link");
+          let u = new URL(existing.value);
+          let ls = u.searchParams.getAll("l");
+          let area = document.getElementById("addresses");
+          area.value = ls.join("\n");
+          makeLink();
+      }
+    </script>
+    <textarea id="addresses" oninput="makeLink()"></textarea>
+  </div>
+  <div>
+    <h2 id="link"></h2>
+  </div>
+  <div>
+    <p>Copy an existing link here to extract the addresses:</p>
+    <input id="existing-link" type="text" size="80"></input>
+    <button onclick="extractAddresses()">Extract</button>
+</body>
+</html>
