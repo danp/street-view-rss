@@ -28,7 +28,9 @@
           a.href = "/atom.xml?" + query.join("&");
           a.innerHTML = "The RSS link"
           link.innerHTML = "";
-          link.appendChild(a);
+          if (lines.length > 0) {
+              link.appendChild(a);
+          }
       }
 
       function extractAddresses() {
