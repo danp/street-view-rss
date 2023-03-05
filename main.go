@@ -59,10 +59,11 @@ func main() {
 			}
 
 			if !updated.IsZero() {
+				n := updated.Unix()
 				feed.Entry = append(feed.Entry, &atom.Entry{
 					Title:   "Update for " + l,
 					ID:      "urn:street-view-updates:item:" + enc + ":" + updated.Format("20060102"),
-					Link:    []atom.Link{{Href: "https://www.google.com/maps/place/" + url.QueryEscape(l)}},
+					Link:    []atom.Link{{Href: "https://www.google.com/maps/place/" + url.QueryEscape(l) + "?n=" + fmt.Sprint(n)}},
 					Content: &atom.Text{Type: "text", Body: l + " was updated " + updated.Format("2006-01-02")},
 				})
 			}
